@@ -15,7 +15,7 @@ model = dict(
         out_channels=[512, 256, 128]),
  bbox_head=dict(
         type='YOLOV3Head',
-        num_classes=80,
+        num_classes=1,
         in_channels=[512, 256, 128],
         out_channels=[1024, 512, 256],
         anchor_generator=dict(
@@ -141,7 +141,7 @@ lr_config = dict(
     step=[24, 28])
 
 # runtime settings
-runner = dict(type='EpochBasedRunner', max_epochs=100)
+runner = dict(type='EpochBasedRunner', max_epochs=20)
 checkpoint_config = dict(interval=5)
 evaluation = dict(interval=1, metric=['mAP']) # https://github.com/open-mmlab/mmdetection/issues/3245
 find_unused_parameters = True
