@@ -11,22 +11,28 @@ from .xml_style import XMLDataset
 @DATASETS.register_module()
 class VOCDataset(XMLDataset):
 
-    CLASSES = ('aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car',
-               'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
-               'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
-               'tvmonitor')
+    # CLASSES = ('aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car',
+    #            'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse',
+    #            'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train',
+    #            'tvmonitor')
 
-    PALETTE = [(106, 0, 228), (119, 11, 32), (165, 42, 42), (0, 0, 192),
-               (197, 226, 255), (0, 60, 100), (0, 0, 142), (255, 77, 255),
-               (153, 69, 1), (120, 166, 157), (0, 182, 199), (0, 226, 252),
-               (182, 182, 255), (0, 0, 230), (220, 20, 60), (163, 255, 0),
-               (0, 82, 0), (3, 95, 161), (0, 80, 100), (183, 130, 88)]
+    # PALETTE = [(106, 0, 228), (119, 11, 32), (165, 42, 42), (0, 0, 192),
+    #            (197, 226, 255), (0, 60, 100), (0, 0, 142), (255, 77, 255),
+    #            (153, 69, 1), (120, 166, 157), (0, 182, 199), (0, 226, 252),
+    #            (182, 182, 255), (0, 0, 230), (220, 20, 60), (163, 255, 0),
+    #            (0, 82, 0), (3, 95, 161), (0, 80, 100), (183, 130, 88)]
+
+    CLASSES = ('fire',)
+
+    PALETTE = [(106, 0, 228)]
 
     def __init__(self, **kwargs):
         super(VOCDataset, self).__init__(**kwargs)
         if 'VOC2007' in self.img_prefix:
             self.year = 2007
         elif 'VOC2012' in self.img_prefix:
+            self.year = 2012
+        elif 'VOC2020' in self.img_prefix:
             self.year = 2012
         else:
             raise ValueError('Cannot infer dataset year from img_prefix')

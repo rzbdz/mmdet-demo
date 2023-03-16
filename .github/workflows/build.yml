@@ -134,7 +134,6 @@ jobs:
           export CFLAGS=`python -c 'import sysconfig;print("-I"+sysconfig.get_paths()["include"])'`
           export CXXFLAGS="${CFLAGS}"
           python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu101/torch${{matrix.mmcv}}/index.html
-          python -m pip install pycocotools
           python -m pip install -r requirements/tests.txt -r requirements/optional.txt
           python -m pip install albumentations>=0.3.2 --no-binary imgaug,albumentations
           python -m pip install git+https://github.com/cocodataset/panopticapi.git
@@ -214,7 +213,6 @@ jobs:
           export CFLAGS=`python -c 'import sysconfig;print("-I"+sysconfig.get_paths()["include"])'`
           export CXXFLAGS="${CFLAGS}"
           python -m pip install mmcv-full -f https://download.openmmlab.com/mmcv/dist/cu102/torch${{matrix.mmcv}}/index.html
-          python -m pip install pycocotools
           python -m pip install -r requirements/tests.txt -r requirements/optional.txt
           python -m pip install albumentations>=0.3.2 --no-binary imgaug,albumentations
           python -m pip install git+https://github.com/cocodataset/panopticapi.git
@@ -261,7 +259,6 @@ jobs:
       - name: Install unittest dependencies
         run: |
           python -V
-          python -m pip install pycocotools
           python -m pip install -r requirements/tests.txt -r requirements/optional.txt
           python -m pip install albumentations>=0.3.2 --no-binary imgaug,albumentations
           python -m pip install git+https://github.com/cocodataset/panopticapi.git
