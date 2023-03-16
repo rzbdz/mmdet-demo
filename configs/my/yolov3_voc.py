@@ -8,16 +8,16 @@ model = dict(
         depth=53,
         out_indices=(3, 4, 5),
         init_cfg=dict(type='Pretrained', checkpoint='open-mmlab://darknet53')),
-   neck=dict(
+    neck=dict(
         type='YOLOV3Neck',
         num_scales=3,
-        in_channels=[320, 96, 32],
-        out_channels=[96, 96, 96]),
-    bbox_head=dict(
+        in_channels=[1024, 512, 256],
+        out_channels=[512, 256, 128]),
+ bbox_head=dict(
         type='YOLOV3Head',
-        num_classes=1,
-        in_channels=[96, 96, 96],
-        out_channels=[96, 96, 96],
+        num_classes=80,
+        in_channels=[512, 256, 128],
+        out_channels=[1024, 512, 256],
         anchor_generator=dict(
             type='YOLOAnchorGenerator',
             base_sizes=[[(116, 90), (156, 198), (373, 326)],
@@ -60,8 +60,10 @@ model = dict(
 # dataset settings
 dataset_type = 'VOCDataset'
 data_root = 'data/'
-img_norm_cfg = dict(
-    mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+# img_norm_cfg = dict(
+#     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+img_norm_cfg = dict(mean=[0, 0, 0], std=[255., 255., 255.], to_rgb=True)
+
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_bbox=True),
@@ -77,7 +79,7 @@ train_pipeline = [
     dict(
         type='Resize',
         img_scale=[(320, 320), (416, 416)],
-        # img_scale=[(160, 160), (208, 208)],
+        # img_scale=[(160, 160), (608, 608)],
         multiscale_mode='range',
         keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
@@ -91,7 +93,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale = (416, 416),
+        img_scale = (608, 608),
         # img_scale=(208, 208),
         flip=False,
         transforms=[
@@ -104,7 +106,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=4,
+    samples_per_gpu=8,
     workers_per_gpu=1,
     train=dict(
         type='RepeatDataset',  # use RepeatDataset to speed up training
@@ -128,7 +130,7 @@ data = dict(
 # optimizer
 # lr = 0.003 with 8GPU * 24 images => lr = 0.003 / 8 with 1GPU * 12images
 # optimizer = dict(type='SGD', lr=(0.003/(8*24))*4, momentum=0.9, weight_decay=0.0005)
-optimizer = dict(type='SGD', lr=(0.003/(8*24))*4, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=(0.003/(8*24))*8, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
@@ -147,4 +149,4 @@ find_unused_parameters = True
 # NOTE: `auto_scale_lr` is for automatically scaling LR,
 # USER SHOULD NOT CHANGE ITS VALUES.
 # base_batch_size = (8 GPUs) x (24 samples per GPU)
-auto_scale_lr = dict(base_batch_size=4)
+auto_scale_lr = dict(base_batch_size=8)
